@@ -16,8 +16,8 @@ const count = ref(0)
     position: absolute;
     display: block;
     max-height: 324px;
-    top:92px;
-    left:58px;
+    top: 92px;
+    left: 58px;
     margin-inline: auto;
 }
 </style>

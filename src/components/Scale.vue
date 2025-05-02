@@ -43,18 +43,18 @@ useAnimationFrame((_, delta) => {
 
 .scale-bg {
     display: block;
-    width: 40px;
+    width: 48px;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 32px;
+    left: 12px;
 }
 
 .scale {
     display: block;
-    width: 40px;
+    width: 48px;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 32px;
+    left: 12px;
     z-index: 1;
 }
 
@@ -66,7 +66,7 @@ useAnimationFrame((_, delta) => {
     position: absolute;
     left: 0;
     border-radius: 2px;
-    margin-left: -5px;
+    margin-left: -7px;
 }
 
 .filler {
@@ -74,9 +74,9 @@ useAnimationFrame((_, delta) => {
     height: 0px;
     width: 34px;
     background-color: #00D355;
-    bottom: 5px;
+    bottom: 35px;
     z-index: 0;
-    left: 2px;
+    left: 19px;
     border-radius: 2px;
 }
 </style>

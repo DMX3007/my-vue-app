@@ -5,6 +5,8 @@ import WelcomeScreen from './components/WelcomeScreen.vue'
 import Scale from './components/Scale.vue'
 import MainMeasure from './components/MainMeasure.vue'
 import ButtonWithHammer from './components/ButtonWithHammer.vue'
+import NewGameButton from './components/NewGameButton.vue'
+import RobotAvatar from './components/RobotAvatar.vue'
 
 interface State {
   state: 'welcome' | 'playing' | 'result'
@@ -19,12 +21,14 @@ let game: State = {
 <template>
   <div class="game_container">
       <!-- <img class="bg_image" :src="BgImage" /> -->
-      <Scale />
-      <ButtonWithHammer />
-      <MainMeasure state="" />
+      <MainMeasure state="measure" />
+      <Scale class="scale"/>
+      <NewGameButton class="new-game"/>
+      <RobotAvatar class="robot"/>
+      <ButtonWithHammer class="hammer-button"/>
       <!-- <GameStateManager :state="game.state"  /> -->
       <!-- <WelcomeScreen v-if="game.state === 'welcome'" :state="game.state"/> -->
-  </div>
+    </div>
 </template>
 
 <style scoped>
@@ -37,8 +41,26 @@ let game: State = {
   background-image: url('./assets/bg_top.png');
   background-repeat: repeat-y;
   background-size: 100% 750px;
-  /* background-position: top center; */
-  z-index: -1; 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  z-index: -1;
 }
 
+.scale {
+
+}
+
+.new-game {
+  grid-column: 2/4;
+  /* grid-row: 6; */
+}
+
+.hammer-button {
+  grid-column: 4;
+  grid-row: 6;
+}
+.robot {
+  /* grid-column: 5; */
+}
 </style>

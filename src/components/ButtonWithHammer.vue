@@ -35,8 +35,6 @@ const CONTAINER_HEIGHT = 147
 <style scoped>
 .button-container {
     position: relative;
-    width: 100%;
-    height: 100%;
 }
 
 .button {
