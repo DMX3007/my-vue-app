@@ -8,7 +8,6 @@ const count = ref(0)
 
 <template>
   <button @click="count++">{{ state }}</button>
-  
 </template>
 
 <style scoped>
