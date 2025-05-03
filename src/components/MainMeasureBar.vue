@@ -39,7 +39,6 @@ watch(() => [props.isAnimated, props.score], (newVal) => {
                 break;
             }
         }
-        console.log(newVal, 'changed newVal')
         animateSequentially(undefined, stopIndex)
     }
 })

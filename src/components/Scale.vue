@@ -14,7 +14,6 @@ const emit = defineEmits(['hit'])
 let isHit = false;
 
 watch(() => props.state, () => {
-    console.log(props.state, 'from Scale')
     if (props.state === 'hit') {
         isHit = true
     }

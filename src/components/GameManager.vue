@@ -39,7 +39,7 @@ function handleHitScale(score: number){
       <Scale @hit="handleHitScale" class="scale" :state="game.state"/>
       <NewGameButton :text-html="game.textHtml" class="new-game" @start-next-phase="handleStartNewPhase" :state="game.state"/>
       <RobotAvatar class="robot"/>
-      <ButtonWithHammer class="hammer-button"/>
+      <ButtonWithHammer :state="game.state" class="hammer-button"/>
     </div>
 </template>
 

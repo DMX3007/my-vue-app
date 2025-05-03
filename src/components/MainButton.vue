@@ -7,8 +7,7 @@ const props = defineProps<Omit<GameState, 'hitScore'>>()
 let isInvisible = false;
 
 watch(() => [props.state, props.textHtml], () => {
-    console.log(props.state, 'from child')
-    console.log(props.textHtml)
+
     // if (props.state === 'playing') {
     //     isInvisible = true
     // }
@@ -16,8 +15,6 @@ watch(() => [props.state, props.textHtml], () => {
     //     isInvisible = false
     // }
 })
-
-
 
 </script>
 
