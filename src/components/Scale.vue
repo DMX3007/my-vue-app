@@ -6,15 +6,32 @@ import { useAnimationFrame } from 'motion-v'
 import ScaleBackground from '../assets/scale.png'
 import Scale from '../assets/scale-1.png'
 
+import { type GameState } from '../types/d'
+import { watch } from 'vue'
+
+const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml' >>()
+const emit = defineEmits(['hit'])
+let isHit = false;
+
+watch(() => props.state, () => {
+    console.log(props.state, 'from Scale')
+    if (props.state === 'hit') {
+        isHit = true
+    }
+})
+
 const CONTAINER_HEIGHT = 147
 
-const domRef = ref(null)
+const domRef = ref<HTMLElement | null>(null)
 const current = ref(0)
 let target = Math.random() * CONTAINER_HEIGHT
 
-useAnimationFrame((_, delta) => {
+useAnimationFrame(() => {
     if (!domRef.value) return
-
+    if (isHit) {
+        return emit('hit', current.value)
+    }
+    
     current.value += (target - current.value) * 0.04
 
     domRef.value.style.height = `${current.value}px`

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+
 import MainMeasureImage from '../assets/measure_main.png'
 
 defineProps<{ state: string }>()
 
-const count = ref(0)
 </script>
 
 <template>
