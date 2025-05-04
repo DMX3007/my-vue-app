@@ -25,7 +25,7 @@ const animateSequentially = (index = 0, stopValue = 7) => {
 
     setTimeout(() => {
         animateSequentially(index + 1, stopValue)
-    }, 400)
+    },400)
 }
 
 watch(() => [props.isAnimated, props.score], (newVal) => {
@@ -33,13 +33,15 @@ watch(() => [props.isAnimated, props.score], (newVal) => {
         let stopIndex = 0;
         for (let i = 7; i >= 0; i--) {
             let result = undefined
-            result = checkTreshold(scoreMap[i], props.score) 
+            result = checkTreshold(scoreMap[i], props.score)
             if (result) {
                 stopIndex = i
                 break;
             }
         }
-        animateSequentially(undefined, stopIndex)
+        setTimeout(() => {
+            animateSequentially(undefined, stopIndex)
+        }, 400)
     }
 })
 

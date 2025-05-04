@@ -38,8 +38,8 @@ function handleHitScale(score: number){
         :initial-colors="gameManager.getInitialColors()" />
       <Scale @hit="handleHitScale" class="scale" :state="game.state"/>
       <NewGameButton :text-html="game.textHtml" class="new-game" @start-next-phase="handleStartNewPhase" :state="game.state"/>
-      <RobotAvatar class="robot"/>
-      <ButtonWithHammer :state="game.state" class="hammer-button"/>
+      <RobotAvatar :state="game.state" class="robot"/>
+      <ButtonWithHammer @start-next-phase="handleStartNewPhase" :state="game.state" class="hammer-button"/>
     </div>
 </template>
 

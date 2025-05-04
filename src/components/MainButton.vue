@@ -7,13 +7,12 @@ const props = defineProps<Omit<GameState, 'hitScore'>>()
 let isInvisible = false;
 
 watch(() => [props.state, props.textHtml], () => {
-
-    // if (props.state === 'playing') {
-    //     isInvisible = true
-    // }
-    // else {
-    //     isInvisible = false
-    // }
+    if (props.state === 'hit') {
+        isInvisible = true
+    }
+    else {
+        isInvisible = false
+    }
 })
 
 </script>
@@ -24,7 +23,7 @@ watch(() => [props.state, props.textHtml], () => {
             <p class="text">{{ props.textHtml.text }}<span class="sub-text">{{ props.textHtml.subText }}</span></p>
         </div>
         <div class="button-container" :class="{'invisible': isInvisible}">
-            <button @click="$emit('start-next-phase', props.state)" class="button roboto-font">{{ props.textHtml.buttonText }}</button>
+            <button @click="$emit('start-next-phase', props.state)" class="button roboto-font" :class="{ hit: props.state === 'playing'}">{{ props.textHtml.buttonText }}</button>
         </div>
     </div>
 </template>

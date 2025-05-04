@@ -4,11 +4,12 @@ import HammerImage from '../assets/hammer.png'
 import ButtonImage from '../assets/button.png'
 import ButtonActive from '../assets/button_active.png'
 import { type GameState } from '../types/d';
-import { animate, motion } from 'motion-v'
+import { motion } from 'motion-v'
 import { watch } from 'vue'
 
-
 const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml'>>()
+
+const emit = defineEmits(['start-new-phase'])
 
 let rotate = -43
 let y = 0
@@ -21,12 +22,11 @@ let opacityActiveButton = 0
 let opacityInactiveButton = 1
 
 function smackMyBitchUp() {
-    
 }
 
 watch(() => props.state, (newVal, oldVal) => {
-    if(newVal) {
-        if (props.state === 'hit') {
+    if (newVal) {
+        if (props.state === 'playing') {
             rotateNew = 10
             yNew = -40
             setTimeout(() => {
@@ -35,7 +35,8 @@ watch(() => props.state, (newVal, oldVal) => {
                 yNew = -20
                 opacityActiveButton = 1
                 opacityInactiveButton = 0
-            }, 1000)
+                emit('start-new-phase', props.state)
+            }, 0)
         }
     }
 })
@@ -43,9 +44,12 @@ watch(() => props.state, (newVal, oldVal) => {
 
 <template>
     <div class="button-container">
-        <motion.img class="button" :src="ButtonImage" :initial="{opacity: opacityInactiveButton}" :animate="{opacity: opacityInactiveButton}" :transition="{duration: 0.3}"/>
-        <motion.img class="button" :src="ButtonActive" :initial="{opacity: 0}" :animate="{opacity: opacityActiveButton}" :transition="{duration: 1}"/>
-        <motion.img class="hammer" :src="HammerImage" :transition="{ duration: 1 }" :initial="{ rotate: rotate, y: y }" :animate="{ rotate: rotateNew,  y: yNew, x: xNew }"/>
+        <motion.img class="button" :src="ButtonImage" :initial="{ opacity: opacityInactiveButton }"
+            :animate="{ opacity: opacityInactiveButton }" :transition="{ duration: 0.3 }" />
+        <motion.img class="button" :src="ButtonActive" :initial="{ opacity: 0 }" :animate="{ opacity: opacityActiveButton }"
+            :transition="{ duration: 0.3 }" />
+        <motion.img class="hammer" :src="HammerImage" :transition="{ duration: 0.3 }" :initial="{ rotate: rotate, y: y }"
+            :animate="{ rotate: rotateNew, y: yNew, x: xNew }" />
     </div>
 </template>
 
@@ -72,7 +76,6 @@ watch(() => props.state, (newVal, oldVal) => {
     position: absolute;
     z-index: 1;
     width: 120.13px;
-    /* transform: scale(1.0051); */
     top: -252px;
     right: 48px;
 }

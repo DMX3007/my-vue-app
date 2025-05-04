@@ -1,4 +1,4 @@
-export type Phases = 'welcome' | 'begin' | 'playing' | 'hit' | 'again' | 'win'
+export type Phases = 'welcome' | 'playing' | 'hit' | 'again' | 'win'
 
 export interface IHtmlMainButton {
   text: string,

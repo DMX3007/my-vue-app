@@ -9,8 +9,6 @@ class GameManager {
     getNextPhase(currentPhase: Phases, event?: string) {
         switch (currentPhase) {
             case 'welcome':
-                return 'begin'
-            case 'begin':
                 return 'playing'
             case 'playing':
                 return 'hit';
@@ -51,7 +49,7 @@ class GameManager {
         switch(currentPhase){
             case 'welcome':
                 return {text: "Привет!", subText: "проверим твою силу!", buttonText: "Новая Игра"}
-            case 'begin':
+            case 'playing':
                 return {text: "Жми на кнопку", subText: "в нужный момент!!", buttonText: "Удар"}
             case 'hit':
                 return {text: "Неплохо!", subText: "Попробуй ещё раз.", buttonText: "Новая Игра"}
