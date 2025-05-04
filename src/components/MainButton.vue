@@ -11,7 +11,7 @@ watch(() => [props.state, props.textHtml], (newVal) => {
         if (props.state === 'hit') isInvisible.value = true
         setTimeout(() => {
             isInvisible.value = false
-    }, 4000)
+    }, 2000)
     }
 })
 
@@ -25,7 +25,7 @@ watch(() => [props.state, props.textHtml], (newVal) => {
             <p v-if="props.state === 'win'" class="ruby">Рубин</p>
         </div>
         <div class="button-container" :class="{'invisible': isInvisible}">
-            <button @click="$emit('start-next-phase', props.state)" class="button roboto-font" :class="{ hit: props.state === 'playing'}">{{ props.textHtml.buttonText }}</button>
+            <button :disabled="isInvisible" @click="$emit('start-next-phase', props.state)" class="button roboto-font" :class="{ hit: props.state === 'playing'}">{{ props.textHtml.buttonText }}</button>
         </div>
     </div>
 </template>

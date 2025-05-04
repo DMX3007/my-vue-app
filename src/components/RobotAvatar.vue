@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
 import robot from '../assets/robot_1.png'
 import robot2 from '../assets/robot_2.png'
 import robot3 from '../assets/robot_3.png'
@@ -8,29 +8,29 @@ import { motion } from 'motion-v'
 
 const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml'>>()
 
-let initFirstImageOpacity = 1
-let targetFirstImageOpacity = 1
+const initFirstImageOpacity = ref(1)
+const targetFirstImageOpacity = ref(1)
 
-let initHitImageOpacity = 0
-let targetHitImageOpacity = 0
+const initHitImageOpacity = ref(0)
+const targetHitImageOpacity = ref(0)
 
-let initWinImageOpacity = 0
-let targetWinImageOpacity = 0
+const initWinImageOpacity = ref(0)
+const targetWinImageOpacity = ref(0)
 
-watch(() => props.state, () => {
-    if (props.state === 'hit') {
-        targetFirstImageOpacity = 0
-        targetHitImageOpacity = 1
-    } else if (props.state === 'win') {
-        targetHitImageOpacity = 0
-        targetFirstImageOpacity = 0
-        targetWinImageOpacity = 1
-    } else {
-        initFirstImageOpacity = 1
-        targetFirstImageOpacity = 1
-        targetHitImageOpacity = 0
-        targetWinImageOpacity = 0
-    }
+watch(() => props.state, (state) => {
+  if (state === 'hit') {
+    targetFirstImageOpacity.value = 0
+    targetHitImageOpacity.value = 1
+  } else if (state === 'win') {
+    targetFirstImageOpacity.value = 0
+    targetHitImageOpacity.value = 0
+    targetWinImageOpacity.value = 1
+  } else {
+    initFirstImageOpacity.value = 1
+    targetFirstImageOpacity.value = 1
+    targetHitImageOpacity.value = 0
+    targetWinImageOpacity.value = 0
+  }
 })
 </script>
 

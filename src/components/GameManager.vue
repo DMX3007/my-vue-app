@@ -9,27 +9,32 @@ import { type GameState, type Phases, type MainBarColors } from '../types/d'
 import { ref } from 'vue';
 import gameManager from '../utils/GameManager'
 
-let game = ref<GameState>({
+const game = ref<GameState>({
   state: 'welcome',
   hitScore: null,
   textHtml: gameManager.getNextText('welcome')
 })
 
-let colors = ref<MainBarColors>({
+const colors = ref<MainBarColors>({
   initial: gameManager.getInitialColors(),
   target: gameManager.getTargetColors(),
 })
 
+function handleAgainTransition() {
+  game.value.state = 'again'
+  setTimeout(() => {
+    game.value.state = 'playing'
+  }, 100)
+}
+
 function handleStartNewPhase(newState: Phases = game.value.state) {
   const nextState = gameManager.getNextPhase(newState)
   if (nextState === 'again') {
-    game.value.state = 'again'
-    setTimeout(() => {
-      game.value.state = 'playing'
-    }, 100)
+    handleAgainTransition()
   } else {
     game.value.state = nextState
   }
+
   game.value.textHtml = gameManager.getNextText(game.value.state)
 
   if (game.value.state === 'welcome') {
@@ -42,8 +47,8 @@ function handleHitScale(score: number) {
 }
 
 function handleFilledMeasureBar() {
-  if (!game.value.hitScore) return 
-  if (game.value.hitScore > 130) {
+  if (game.value.hitScore == null) return
+  if (game.value.hitScore >= 130) {
     game.value.state = 'win'
   }
 }
@@ -74,8 +79,8 @@ function handleFilledMeasureBar() {
   background-repeat: repeat-y;
   background-size: 100% 750px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   z-index: -1;
 }
 

@@ -9,8 +9,6 @@ import { watch } from 'vue'
 
 const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml'>>()
 
-const emit = defineEmits(['eve'])
-
 const INITIAL_HAMMER_ROTATE = -43
 const INITIAL_HAMMER_Y = 0
 

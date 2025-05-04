@@ -10,43 +10,44 @@ import { type GameState } from '../types/d'
 import { watch } from 'vue'
 
 const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml'>>()
-const emit = defineEmits(['hit'])
+const emit = defineEmits<{
+    (e: 'hit', value: number): void
+}>()
 let isHit = false;
-
 
 const CONTAINER_HEIGHT = 147
 
-const domRef = ref<HTMLElement | null>(null)
+const fillerRef = ref<HTMLElement | null>(null)
 const current = ref(0)
 let target = Math.random() * CONTAINER_HEIGHT
 
 useAnimationFrame(() => {
-    if (!domRef.value) return
+    if (!fillerRef.value) return
     if (isHit) {
         return emit('hit', current.value)
     }
-    if (props.state ==='welcome') {
+    if (props.state === 'welcome') {
         current.value = 0
     }
 
     current.value += (target - current.value) * 0.04
 
-    domRef.value.style.height = `${current.value}px`
+    fillerRef.value.style.height = `${current.value}px`
 
     if (Math.abs(current.value - target) < 1) {
         target = Math.random() * CONTAINER_HEIGHT
     }
 })
 
-watch(() => props.state, (newVal) => {
-    if (!domRef.value) return
+watch(() => props.state, () => {
+    if (!fillerRef.value) return
     if (props.state === 'hit') {
         isHit = true
     } else if (props.state === 'welcome' || props.state === 'again') {
         isHit = false
         current.value = 0
     }
-    domRef.value.style.height = `${current.value}px`
+    fillerRef.value.style.height = `${current.value}px`
 })
 
 </script>
@@ -55,7 +56,7 @@ watch(() => props.state, (newVal) => {
     <div class="scale-container">
         <img class="scale-bg" :src="ScaleBackground" />
         <img class="scale" :src="Scale" />
-        <div class="filler" ref="domRef"></div>
+        <div class="filler" ref="fillerRef"></div>
     </div>
 </template>
 
