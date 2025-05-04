@@ -9,15 +9,10 @@ import Scale from '../assets/scale-1.png'
 import { type GameState } from '../types/d'
 import { watch } from 'vue'
 
-const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml' >>()
+const props = defineProps<Omit<GameState, 'hitScore' | 'textHtml'>>()
 const emit = defineEmits(['hit'])
 let isHit = false;
 
-watch(() => props.state, () => {
-    if (props.state === 'hit') {
-        isHit = true
-    }
-})
 
 const CONTAINER_HEIGHT = 147
 
@@ -30,7 +25,10 @@ useAnimationFrame(() => {
     if (isHit) {
         return emit('hit', current.value)
     }
-    
+    if (props.state ==='welcome') {
+        current.value = 0
+    }
+
     current.value += (target - current.value) * 0.04
 
     domRef.value.style.height = `${current.value}px`
@@ -38,6 +36,17 @@ useAnimationFrame(() => {
     if (Math.abs(current.value - target) < 1) {
         target = Math.random() * CONTAINER_HEIGHT
     }
+})
+
+watch(() => props.state, (newVal) => {
+    if (!domRef.value) return
+    if (props.state === 'hit') {
+        isHit = true
+    } else if (props.state === 'welcome' || props.state === 'again') {
+        isHit = false
+        current.value = 0
+    }
+    domRef.value.style.height = `${current.value}px`
 })
 
 </script>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { type GameState } from '../types/d'
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 
 const props = defineProps<Omit<GameState, 'hitScore'>>()
 
-let isInvisible = false;
+let isInvisible = ref(false);
 
-watch(() => [props.state, props.textHtml], () => {
-    if (props.state === 'hit') {
-        isInvisible = true
-    }
-    else {
-        isInvisible = false
+watch(() => [props.state, props.textHtml], (newVal) => {
+    if(newVal) {
+        if (props.state === 'hit') isInvisible.value = true
+        setTimeout(() => {
+            isInvisible.value = false
+    }, 4000)
     }
 })
 
@@ -19,8 +19,10 @@ watch(() => [props.state, props.textHtml], () => {
 
 <template>
     <div class="container roboto-font">
-        <div class="text-block" :class="{'invisible': isInvisible}">
-            <p class="text">{{ props.textHtml.text }}<span class="sub-text">{{ props.textHtml.subText }}</span></p>
+        <div class="text-block" :style="{ marginBottom: props.state === 'win' ? '47px' : '53px' }" :class="{'invisible': isInvisible}">
+            <!-- <p class="text" >{{ props.textHtml.text }}<span class="sub-text">{{ props.textHtml.subText }}</span></p> -->
+            <p class="text" >{{ props.state === 'win' ? 'ВОТ ЭТО СИЛА!' : props.textHtml.text  }}<span class="sub-text">{{ props.state === 'win' ? 'Ты выбил главный приз!' : props.textHtml.subText  }}</span></p>
+            <p v-if="props.state === 'win'" class="ruby">Рубин</p>
         </div>
         <div class="button-container" :class="{'invisible': isInvisible}">
             <button @click="$emit('start-next-phase', props.state)" class="button roboto-font" :class="{ hit: props.state === 'playing'}">{{ props.textHtml.buttonText }}</button>
@@ -40,11 +42,12 @@ watch(() => [props.state, props.textHtml], () => {
     gap: 0px;
     line-height: 15px;
     font-size: 14px;
-    margin-bottom: 40px;
+    margin-bottom: 53px;
 }
 
 .text {
     text-align: center;
+    margin: 0;
 }
 
 .sub-text {
@@ -85,5 +88,11 @@ watch(() => [props.state, props.textHtml], () => {
     outline: 1px solid #BB20A2;
     background-color: #FFDF35;
     color: #BB20A2;
+}
+
+.ruby {
+    color: #FF4646;
+    text-align: center;
+    margin: 0;
 }
 </style>

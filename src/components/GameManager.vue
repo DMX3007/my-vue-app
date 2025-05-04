@@ -5,7 +5,7 @@ import ButtonWithHammer from '../components/ButtonWithHammer.vue'
 import NewGameButton from './MainButton.vue'
 import RobotAvatar from '../components/RobotAvatar.vue'
 import MainMeasureBar from '../components/MainMeasureBar.vue'
-import { type GameState, type Phases } from '../types/d'
+import { type GameState, type Phases, type MainBarColors } from '../types/d'
 import { ref } from 'vue';
 import gameManager from '../utils/GameManager'
 
@@ -15,36 +15,55 @@ let game = ref<GameState>({
   textHtml: gameManager.getNextText('welcome')
 })
 
+let colors = ref<MainBarColors>({
+  initial: gameManager.getInitialColors(),
+  target: gameManager.getTargetColors(),
+})
+
 function handleStartNewPhase(newState: Phases = game.value.state) {
-  game.value.state = gameManager.getNextPhase(newState)
-  game.value.textHtml = gameManager.getNextText(newState)
-  return
+  const nextState = gameManager.getNextPhase(newState)
+  if (nextState === 'again') {
+    game.value.state = 'again'
+    setTimeout(() => {
+      game.value.state = 'playing'
+    }, 100)
+  } else {
+    game.value.state = nextState
+  }
+  game.value.textHtml = gameManager.getNextText(game.value.state)
+
+  if (game.value.state === 'welcome') {
+    game.value.hitScore = 0
+  }
 }
 
-function handleHitScale(score: number){
+function handleHitScale(score: number) {
   game.value.hitScore = score
-  return
+}
+
+function handleFilledMeasureBar() {
+  if (!game.value.hitScore) return 
+  if (game.value.hitScore > 130) {
+    game.value.state = 'win'
+  }
 }
 
 </script>
 
 <template>
   <div class="game_container">
-      <MainMeasure state="measure" />
-      <MainMeasureBar 
-        :score="game.hitScore"
-        :is-animated="game.state === 'hit'"
-        :target-colors="gameManager.getTargetColors()"
-        :initial-colors="gameManager.getInitialColors()" />
-      <Scale @hit="handleHitScale" class="scale" :state="game.state"/>
-      <NewGameButton :text-html="game.textHtml" class="new-game" @start-next-phase="handleStartNewPhase" :state="game.state"/>
-      <RobotAvatar :state="game.state" class="robot"/>
-      <ButtonWithHammer @start-next-phase="handleStartNewPhase" :state="game.state" class="hammer-button"/>
-    </div>
+    <MainMeasure state="measure" />
+    <MainMeasureBar @filled="handleFilledMeasureBar" :state="game.state" :score="game.hitScore"
+      :is-animated="game.state === 'hit'" :target-colors="colors.target" :initial-colors="colors.initial" />
+    <Scale @hit="handleHitScale" class="scale" :state="game.state" />
+    <NewGameButton :text-html="game.textHtml" class="new-game" @start-next-phase="handleStartNewPhase"
+      :state="game.state" />
+    <RobotAvatar :state="game.state" class="robot" />
+    <ButtonWithHammer @eve="handleStartNewPhase" :state="game.state" class="hammer-button" />
+  </div>
 </template>
 
 <style scoped>
-
 .game_container {
   position: relative;
   max-width: 360px;
@@ -62,7 +81,7 @@ function handleHitScale(score: number){
 
 .new-game {
   grid-column: 2/4;
- }
+}
 
 .hammer-button {
   grid-column: 4;

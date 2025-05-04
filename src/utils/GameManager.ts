@@ -6,17 +6,30 @@ class GameManager {
         this.state = state
     }
 
-    getNextPhase(currentPhase: Phases, event?: string) {
+    reset() {
+        this.state = 'again'
+    }
+
+    getNextPhase(currentPhase: Phases, score?: number) {
+        let isWin = score! >= 130
         switch (currentPhase) {
             case 'welcome':
+                this.state = currentPhase;
                 return 'playing'
             case 'playing':
+                this.state = currentPhase;
                 return 'hit';
             case 'hit':
-                return 'again'
+                this.state = currentPhase;
+                return isWin ? 'win' : 'again'
+            case 'again':
+                this.state = currentPhase;
+                return isWin ? 'win' : 'playing'
             case 'win':
+                this.state = currentPhase;
                 return 'welcome'
             default:
+                this.state = currentPhase;
                 return 'welcome'
         }
     }
@@ -44,19 +57,25 @@ class GameManager {
             level1: "#254B9D"
         }
     }
-    
+
     getNextText(currentPhase: Phases) {
-        switch(currentPhase){
+        switch (currentPhase) {
             case 'welcome':
-                return {text: "Привет!", subText: "проверим твою силу!", buttonText: "Новая Игра"}
-            case 'playing':
-                return {text: "Жми на кнопку", subText: "в нужный момент!!", buttonText: "Удар"}
+                this.state = currentPhase;
+                return { text: "Привет!", subText: "проверим твою силу!", buttonText: "Новая Игра" }
             case 'hit':
-                return {text: "Неплохо!", subText: "Попробуй ещё раз.", buttonText: "Новая Игра"}
+                this.state = currentPhase;
+                return { text: "Неплохо!", subText: "Попробуй ещё раз.", buttonText: "Новая Игра" }
+            case 'again':
+            case 'playing':
+                this.state = currentPhase;
+                return { text: "Жми на кнопку", subText: "в нужный момент!!", buttonText: "Удар" }
             case 'win':
-                return {text: "ВОТ ЭТО СИЛА!", subText: "Ты выбил главный приз!", buttonText: "Новая Игра"}
+                this.state = currentPhase;
+                return { text: "ВОТ ЭТО СИЛА!", subText: "Ты выбил главный приз!", buttonText: "Новая Игра" }
             default:
-                return {text: "Жми на кнопку", subText: "в нужный момент!!", buttonText: "Удар"}
+                this.state = currentPhase;
+                return { text: "Привет!", subText: "проверим твою силу!", buttonText: "Новая Игра" }
         }
     }
 }
